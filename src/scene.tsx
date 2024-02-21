@@ -2,6 +2,12 @@ import React, {Suspense, useEffect, useLayoutEffect, useRef, useState} from "rea
 import {Interactive} from "@react-three/xr";
 import {Line, Text} from "@react-three/drei";
 import {useFrame, useThree} from "@react-three/fiber";
+import {PoiItem} from "./types";
+
+interface SceneProps {
+    POI: PoiItem;
+}
+
 
 function Box({color, size, scale, children, ...rest}: any) {
     return (
@@ -43,7 +49,7 @@ function Button(props: any) {
             <Box color={color} scale={hover ? [0.6, 0.6, 0.6] : [0.6, 0.6, 0.6]} size={[0.4, 0.1, 0.1]} {...props}>
                 <Suspense fallback={null}>
                     <Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
-                        Hello react-xr!
+                        {props.text}
                     </Text>
                 </Suspense>
             </Box>
@@ -51,13 +57,13 @@ function Button(props: any) {
     )
 }
 
+export default function Scene(props: SceneProps) {
 
-export default function Scene() {
     return (
         <>
             <ambientLight/>
             <pointLight position={[10, 10, 10]}/>
-            <Button position={[0, 0, -1]}/>
+            <Button position={[0, 0, -1]} text={props.POI.name}/>
             <Line2Button/>
         </>
     )
