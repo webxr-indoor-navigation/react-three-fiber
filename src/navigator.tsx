@@ -6,21 +6,22 @@ import {PoiItem} from "./types";
 import POIsWindow from "./POIsWindow";
 
 export default function Navigator({poiJsonPath}: any) {
-    const [POI, setPOI] = useState<PoiItem>();
+    const [endPOI, setEndPOI] = useState<PoiItem>();
+    const [startPOI, setStartPOI] = useState<PoiItem>();
     const [options, setOptions] = useState<PoiItem[]>([] as PoiItem[]); // 使用类型断言来指定初始类型
 
     useEffect(() => {
         fetch(poiJsonPath)
             .then(response => response.json())
             .then((data: PoiItem[]) => {
-                setOptions(data); // 直接设置数据，无需额外的映射
+                setOptions(data);
             })
             .catch(error => console.error('Error fetching data:', error));
     }, [poiJsonPath]);
 
     const handleDropdownChange = (selectedUuid: string) => {
         const selectedPOI = options.find(poi => poi.uuid === selectedUuid);
-        setPOI(selectedPOI!);
+        setEndPOI(selectedPOI!);
     };
 
     return (
@@ -30,8 +31,8 @@ export default function Navigator({poiJsonPath}: any) {
             <Canvas>
                 <XR referenceSpace="local">
                     {
-                        POI && (
-                            <Scene endPOI={POI} startPOI={POI}/>
+                        endPOI && (
+                            <Scene endPOI={endPOI} />
                         )
                     }
                     <Controllers/>

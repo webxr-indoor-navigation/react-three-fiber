@@ -5,7 +5,7 @@ import {useFrame, useThree} from "@react-three/fiber";
 import {PoiItem} from "./types";
 
 interface SceneProps {
-    startPOI:   PoiItem;
+    // startPOI:   PoiItem;
     endPOI: PoiItem;
 }
 
