@@ -15,7 +15,6 @@ export default function Navigator({poiJsonPath}: any) {
             .then(response => response.json())
             .then((data: PoiItem[]) => {
                 setOptions(data); // 直接设置数据，无需额外的映射
-                setPOI(data[0])
             })
             .catch(error => console.error('Error fetching data:', error));
     }, [poiJsonPath]);

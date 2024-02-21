@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from 'react'
+import React from 'react'
 import './App.css'
 
 import Navigator from "./navigator";
