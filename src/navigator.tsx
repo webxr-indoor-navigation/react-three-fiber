@@ -5,7 +5,6 @@ import React, {useEffect, useState} from "react";
 import {PoiItem} from "./types";
 import POIsWindow from "./POIsWindow";
 
-
 export default function Navigator({poiJsonPath}: any) {
     const [POI, setPOI] = useState<PoiItem>();
     const [options, setOptions] = useState<PoiItem[]>([] as PoiItem[]); // 使用类型断言来指定初始类型
@@ -32,7 +31,7 @@ export default function Navigator({poiJsonPath}: any) {
                 <XR referenceSpace="local">
                     {
                         POI && (
-                            <Scene POI={POI!}/>
+                            <Scene endPOI={POI} startPOI={POI}/>
                         )
                     }
                     <Controllers/>
