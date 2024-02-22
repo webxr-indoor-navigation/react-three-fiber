@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/react-three-fiber/static/css/main.3625e222.css",
-    "main.js": "/react-three-fiber/static/js/main.cc261d59.js",
+    "main.js": "/react-three-fiber/static/js/main.f532484f.js",
     "static/js/206.f1cb593b.chunk.js": "/react-three-fiber/static/js/206.f1cb593b.chunk.js",
     "index.html": "/react-three-fiber/index.html"
   },
   "entrypoints": [
     "static/css/main.3625e222.css",
-    "static/js/main.cc261d59.js"
+    "static/js/main.f532484f.js"
   ]
 }
