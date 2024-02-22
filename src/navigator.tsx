@@ -1,8 +1,8 @@
-import {ARButton, Controllers, XR, useTeleportation} from "@react-three/xr";
-import {Canvas, useFrame} from "@react-three/fiber";
+import {ARButton, Controllers, XR} from "@react-three/xr";
+import {Canvas} from "@react-three/fiber";
 import Scene from "./scene";
 import React, {useEffect, useState} from "react";
-import {PoiItem} from "./types";
+import {POI} from "./types";
 import POIsWindow from "./POIsWindow";
 
 interface NavigatorProps {
@@ -11,15 +11,15 @@ interface NavigatorProps {
 }
 
 export default function Navigator(props: NavigatorProps) {
-    const [endPOI, setEndPOI] = useState<PoiItem>();
-    const [startPOI, setStartPOI] = useState<PoiItem>();
-    const [options, setOptions] = useState<PoiItem[]>([] as PoiItem[]); // 使用类型断言来指定初始类型
+    const [endPOI, setEndPOI] = useState<POI>();
+    const [startPOI, setStartPOI] = useState<POI>();
+    const [options, setOptions] = useState<POI[]>([] as POI[]); // 使用类型断言来指定初始类型
 
 
     useEffect(() => {
         fetch(props.poiJsonPath)
             .then(response => response.json())
-            .then((data: PoiItem[]) => {
+            .then((data: POI[]) => {
                 setOptions(data);
             })
             .catch(error => console.error('Error fetching data:', error))

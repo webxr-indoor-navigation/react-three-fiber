@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 
-import {PoiItem} from "./types";
+import {POI} from "./types";
 
 interface POIsMenuProps {
-    options: PoiItem[];
+    options: POI[];
     onChange: (selectedUuid: string) => void;
 }
 
-const convertPoiItemToSelectOption = (poiItem: PoiItem): { label: string; value: string } => (
+const convertPoiItemToSelectOption = (poiItem: POI): { label: string; value: string } => (
     {
         label: poiItem.name,
         value: poiItem.uuid

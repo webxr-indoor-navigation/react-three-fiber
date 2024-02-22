@@ -1,20 +1,20 @@
-import React, {Suspense, useEffect, useState} from "react";
+import React, {Suspense, useState} from "react";
 import {Interactive} from "@react-three/xr";
 import {Line, Text} from "@react-three/drei";
 import {useFrame, useThree} from "@react-three/fiber";
-import {PoiItem} from "./types";
+import {POI} from "./types";
 import {Vector3} from "three";
 
 interface SceneProps {
-    startPOI: PoiItem;
-    endPOI: PoiItem;
+    startPOI: POI;
+    endPOI: POI;
 }
 
 interface ButtonProps {
-    endPOI: PoiItem;
+    endPOI: POI;
 }
 interface LineProps {
-    endPOI: PoiItem;
+    endPOI: POI;
 }
 
 
