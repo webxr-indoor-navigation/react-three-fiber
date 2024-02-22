@@ -10,6 +10,13 @@ interface SceneProps {
     endPOI: PoiItem;
 }
 
+interface ButtonProps {
+    endPOI: PoiItem;
+}
+interface LineProps {
+    endPOI: PoiItem;
+}
+
 
 function Box({color, size, scale, children, ...rest}: any) {
     return (
@@ -21,7 +28,7 @@ function Box({color, size, scale, children, ...rest}: any) {
     )
 }
 
-function Line2Button(props: any) {
+function Line2Button(props: LineProps) {
     const {camera} = useThree();
     const [points, setPoints] = useState<Array<number>>([0, -0.7, 0, 0, -0.7, -1])
     const line_height: number = 0.5;
@@ -31,7 +38,7 @@ function Line2Button(props: any) {
         if (camera.position) {
             const cameraPosition = new Vector3();
             camera.getWorldPosition(cameraPosition);
-            setPoints([cameraPosition.x, line_height, cameraPosition.z, props.endPOI.x, line_height, props.endPOI.y]);
+            setPoints([cameraPosition.x, line_height, cameraPosition.z, props.endPOI.X, line_height, props.endPOI.Y]);
         }
     });
 
@@ -40,7 +47,7 @@ function Line2Button(props: any) {
     );
 }
 
-function Button(props: any) {
+function Button(props: ButtonProps) {
     const [hover, setHover] = useState(false)
     const [color, setColor] = useState<any>('blue')
     const button_height: number = 1.2;
@@ -52,7 +59,7 @@ function Button(props: any) {
     return (
         <Interactive onHover={() => setHover(true)} onBlur={() => setHover(false)} onSelect={onSelect}>
             <Box color={color} scale={hover ? [0.6, 0.6, 0.6] : [0.6, 0.6, 0.6]} size={[0.4, 0.1, 0.1]}
-                 position={[props.endPOI.x, button_height, props.endPOI.y]}>
+                 position={[props.endPOI.X, button_height, props.endPOI.Y]}>
                 <Suspense fallback={null}>
                     <Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
                         Test
@@ -66,17 +73,16 @@ function Button(props: any) {
 export default function Scene(props: SceneProps) {
     const {camera} = useThree();
 
-
-
     return (
         <>
             <ambientLight/>
             <pointLight position={[10, 10, 10]}/>
-            <group position={[props.startPOI.x, 0, props.startPOI.y]}>
+            <group position={[props.startPOI.X, 0, props.startPOI.Y]}>
                 <primitive object={camera}/>
             </group>
             <Line2Button endPOI={props.endPOI}/>
             <Button endPOI={props.endPOI}/>
+
         </>
     )
 }

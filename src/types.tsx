@@ -1,6 +1,6 @@
 export interface PoiItem {
-    x: number;
-    y: number;
+    X: number;
+    Y: number;
     uuid: string;
     name: string;
 }
