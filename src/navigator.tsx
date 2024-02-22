@@ -1,5 +1,5 @@
-import {ARButton, Controllers, XR} from "@react-three/xr";
-import {Canvas} from "@react-three/fiber";
+import {ARButton, Controllers, XR, useTeleportation} from "@react-three/xr";
+import {Canvas, useFrame} from "@react-three/fiber";
 import Scene from "./scene";
 import React, {useEffect, useState} from "react";
 import {PoiItem} from "./types";
@@ -7,7 +7,7 @@ import POIsWindow from "./POIsWindow";
 
 interface NavigatorProps {
     poiJsonPath: string;
-    startUUID:  string;
+    startUUID: string;
 }
 
 export default function Navigator(props: NavigatorProps) {
@@ -15,24 +15,24 @@ export default function Navigator(props: NavigatorProps) {
     const [startPOI, setStartPOI] = useState<PoiItem>();
     const [options, setOptions] = useState<PoiItem[]>([] as PoiItem[]); // 使用类型断言来指定初始类型
 
+
     useEffect(() => {
         fetch(props.poiJsonPath)
             .then(response => response.json())
             .then((data: PoiItem[]) => {
                 setOptions(data);
             })
-            .catch(error => console.error('Error fetching data:', error));
-
+            .catch(error => console.error('Error fetching data:', error))
 
     }, [props.poiJsonPath]);
 
     useEffect(() => {
         const selectedPOI = options.find(poi => poi.uuid === props.startUUID);
-        if (selectedPOI){
+        if (selectedPOI) {
             setStartPOI(selectedPOI);
-            console.log("find the startUUID: "+selectedPOI.name);
-        }else {
-            console.log("not find the startUUID: "+props.startUUID);
+            console.log("find the startUUID: " + selectedPOI.name);
+        } else {
+            console.log("not find the startUUID: " + props.startUUID);
         }
     }, [props.startUUID, options]);
 
@@ -46,10 +46,10 @@ export default function Navigator(props: NavigatorProps) {
             <ARButton/>
             <POIsWindow options={options} onChange={handleDropdownChange}/>
             <Canvas>
-                <XR referenceSpace="local">
+                <XR referenceSpace="local-floor">
                     {
-                        endPOI && (
-                            <Scene endPOI={endPOI} />
+                        endPOI && startPOI && (
+                            <Scene endPOI={endPOI} startPOI={startPOI!}/>
                         )
                     }
                     <Controllers/>
