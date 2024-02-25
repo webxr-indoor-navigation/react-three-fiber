@@ -1,29 +1,43 @@
-import React, {Suspense, useState} from "react";
+import React, {Suspense, useEffect, useState, useRef} from "react";
 import {Interactive} from "@react-three/xr";
 import {Line, Text} from "@react-three/drei";
 import {useFrame, useThree} from "@react-three/fiber";
 import {POI} from "./types";
-import {Vector3} from "three";
+import {Vector3, Group, Mesh} from "three";
 
 interface SceneProps {
     startPOI: POI;
     endPOI: POI;
 }
 
-interface ButtonProps {
+const indicator_height: number = 1.2;
+
+interface IndicatorProps {
     endPOI: POI;
 }
+
 interface LineProps {
     endPOI: POI;
 }
 
 
-function Box({color, size, scale, children, ...rest}: any) {
+function Indicator(props: IndicatorProps) {
+    const indicatorRef = useRef<Mesh>(null);
+
+    useEffect(() => {
+        indicatorRef.current!.position.set(props.endPOI.X, indicator_height, props.endPOI.Y);
+        indicatorRef.current!.lookAt(props.endPOI.facing.X, indicator_height, props.endPOI.facing.Y)
+    },);
+
     return (
-        <mesh scale={scale} {...rest}>
-            <boxGeometry args={size}/>
-            <meshPhongMaterial color={color}/>
-            {children}
+        <mesh ref={indicatorRef}>
+            <boxGeometry args={[0.4, 0.1, 0.1]}/>
+            <meshPhongMaterial color={'blue'}/>
+            <Suspense fallback={null}>
+                <Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
+                    Test
+                </Text>
+            </Suspense>
         </mesh>
     )
 }
@@ -47,41 +61,26 @@ function Line2Button(props: LineProps) {
     );
 }
 
-function Button(props: ButtonProps) {
-    const [hover, setHover] = useState(false)
-    const [color, setColor] = useState<any>('blue')
-    const button_height: number = 1.2;
-
-    const onSelect = () => {
-        setColor((Math.random() * 0xffffff) | 0)
-    }
-
-    return (
-        <Interactive onHover={() => setHover(true)} onBlur={() => setHover(false)} onSelect={onSelect}>
-            <Box color={color} scale={hover ? [0.6, 0.6, 0.6] : [0.6, 0.6, 0.6]} size={[0.4, 0.1, 0.1]}
-                 position={[props.endPOI.X, button_height, props.endPOI.Y]}>
-                <Suspense fallback={null}>
-                    <Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
-                        Test
-                    </Text>
-                </Suspense>
-            </Box>
-        </Interactive>
-    )
-}
 
 export default function Scene(props: SceneProps) {
     const {camera} = useThree();
+    const groupRef = useRef<Group>(null);
+
+    useEffect(() => {
+        groupRef.current!.position.set(props.startPOI.facing.X, 0, props.startPOI.facing.Y);
+        groupRef.current!.lookAt(props.startPOI.X, 0, props.startPOI.Y)
+        groupRef.current!.rotateY(Math.PI)
+    }, [props.startPOI]);
 
     return (
         <>
             <ambientLight/>
             <pointLight position={[10, 10, 10]}/>
-            <group position={[props.startPOI.X, 0, props.startPOI.Y]}>
+            <group ref={groupRef}>
                 <primitive object={camera}/>
             </group>
+            <Indicator endPOI={props.endPOI}/>
             <Line2Button endPOI={props.endPOI}/>
-            <Button endPOI={props.endPOI}/>
 
         </>
     )

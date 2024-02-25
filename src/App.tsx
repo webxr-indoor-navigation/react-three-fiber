@@ -7,7 +7,7 @@ import Navigator from "./navigator";
 export default function App() {
     return (
         <>
-            <Navigator poiJsonPath={process.env.PUBLIC_URL+'/test/poi.json'}  startUUID={'25adc303-3adb-4402-9f44-55477d64cffa'}/>
+            <Navigator poiJsonPath={process.env.PUBLIC_URL+'/test/poi.json'}  startUUID={'12beebf7-6a6d-4c33-ba9f-3d96887a48cf'}/>
         </>
     )
 }
