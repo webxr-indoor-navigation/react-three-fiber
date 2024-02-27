@@ -1,0 +1,4 @@
+We adhere to the  General Data Protection Regulation (GDPR) in the EU and the California Consumer Privacy Act (CCPA) in the US.
+We pledge not to collect or store your location information, nor will we track your usage
+within our application. Your personal privacy is of paramount importance to us, and we
+will make every effort to ensure the security and confidentiality of your information.

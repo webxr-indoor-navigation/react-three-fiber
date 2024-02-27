@@ -1,12 +1,14 @@
 /*!
-Custom build of Typr.ts (https://github.com/fredli74/Typr.ts) for use in Troika text rendering.
-Original MIT license applies: https://github.com/fredli74/Typr.ts/blob/master/LICENSE
-*/
+ * JavaScript Cookie v2.2.1
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
 
 /*!
-Custom bundle of @unicode-font-resolver/client v1.0.2 (https://github.com/lojjic/unicode-font-resolver)
-for use in Troika text rendering. 
-Original MIT license applies
+Custom build of Typr.ts (https://github.com/fredli74/Typr.ts) for use in Troika text rendering.
+Original MIT license applies: https://github.com/fredli74/Typr.ts/blob/master/LICENSE
 */
 
 /*!
