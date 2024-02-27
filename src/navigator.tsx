@@ -43,7 +43,6 @@ export default function Navigator(props: NavigatorProps) {
 
     return (
         <>
-            <ARButton/>
             <POIsWindow options={options} onChange={handleDropdownChange}/>
             <Canvas>
                 <XR referenceSpace="local-floor">
