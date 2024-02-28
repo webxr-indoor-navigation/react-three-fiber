@@ -29,7 +29,8 @@ export default function App() {
             {/*    cookieName={'IndoorNavigatorPrivacyCookie'}*/}
             {/*    overlay>Your location is not being tracked.</CookieConsent>*/}
             <Navigator poiJsonPath={process.env.PUBLIC_URL + '/test/poi.json'}
-                       startUUID={'12beebf7-6a6d-4c33-ba9f-3d96887a48cf'}/>
+                       startUUID={'12beebf7-6a6d-4c33-ba9f-3d96887a48cf'}
+                       corridorJsonPath={process.env.PUBLIC_URL + '/test/corridor.json'}/>
 
         </>
     )

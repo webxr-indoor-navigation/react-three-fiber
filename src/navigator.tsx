@@ -7,6 +7,7 @@ import POIsWindow from "./POIsWindow";
 
 interface NavigatorProps {
     poiJsonPath: string;
+    corridorJsonPath: string;
     startUUID: string;
 }
 
@@ -48,7 +49,7 @@ export default function Navigator(props: NavigatorProps) {
                 <XR referenceSpace="local-floor">
                     {
                         endPOI && startPOI && (
-                            <Scene endPOI={endPOI} startPOI={startPOI!}/>
+                            <Scene endPOI={endPOI} startPOI={startPOI!} corridorJsonPath={props.corridorJsonPath}/>
                         )
                     }
                     <Controllers/>
