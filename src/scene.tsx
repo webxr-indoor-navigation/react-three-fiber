@@ -3,7 +3,8 @@ import {Line, Text} from "@react-three/drei";
 import {useFrame, useThree} from "@react-three/fiber";
 import {POI, Point} from "./types";
 import {Vector3, Group, Mesh} from "three";
-import { NavMesh } from "nav2d";
+import {NavMesh} from "nav2d";
+import {cameraPosition} from "three/examples/jsm/nodes/accessors/CameraNode";
 
 interface SceneProps {
     startPOI: POI;
@@ -67,7 +68,7 @@ function Line2Button(props: LineProps) {
 
             setPoints(updatedPoints);
 
-        }else{
+        } else {
             setPoints([0, -0.7, 0, 0, -0.7, -1])
         }
     });
@@ -94,7 +95,7 @@ function WalkableArea(props: LineProps) {
 
             setPoints(updatedPoints);
 
-        }else{
+        } else {
             setPoints([0, -0.7, 0, 0, -0.7, -1])
         }
     });
@@ -103,7 +104,6 @@ function WalkableArea(props: LineProps) {
         <Line points={points} linewidth={10} color={"blue"}/>
     );
 }
-
 
 
 export default function Scene(props: SceneProps) {
@@ -123,8 +123,30 @@ export default function Scene(props: SceneProps) {
             .catch(error => console.error('Error fetching data:', error))
     }, [props.corridorJsonPath]);
 
+    function getPointOnRayFromP1ToP2(POI:POI): Point {
+        const distance = 0.1;
+
+        const dx = POI.facing.x - POI.x;
+        const dy = POI.facing.y - POI.y;
+
+        // 计算向量长度
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        // 计算单位向量
+        const unitX = dx / length;
+        const unitY = dy / length;
+
+        // 计算新点的坐标
+        const newX = POI.x + unitX * distance;
+        const newY = POI.y + unitY * distance;
+
+        return {x: newX, y: newY};
+    }
+
     useEffect(() => {
-        groupRef.current!.position.set(props.startPOI.facing.x, 0, props.startPOI.facing.y);
+        // distance control: from QR-code to camera
+        const cameraPosition: Point = getPointOnRayFromP1ToP2(props.startPOI);
+        groupRef.current!.position.set(cameraPosition.x, 0, cameraPosition.y);
         groupRef.current!.lookAt(props.startPOI.x, 0, props.startPOI.y)
         groupRef.current!.rotateY(Math.PI)
     }, [props.startPOI]);
@@ -134,10 +156,13 @@ export default function Scene(props: SceneProps) {
         if (camera.position && navMesh) {
             const cameraPosition = new Vector3();
             camera.getWorldPosition(cameraPosition);
-            const path = navMesh.findPath({x: cameraPosition.x, y: cameraPosition.z}, {x: props.endPOI.x, y: props.endPOI.y});
+            const path = navMesh.findPath({x: cameraPosition.x, y: cameraPosition.z}, {
+                x: props.endPOI.x,
+                y: props.endPOI.y
+            });
             setPath(path)
             console.log(path)
-        } else{
+        } else {
             console.log("navMesh not defined !!!")
         }
     });
