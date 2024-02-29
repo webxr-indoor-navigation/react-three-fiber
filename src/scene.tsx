@@ -4,7 +4,6 @@ import {useFrame, useThree} from "@react-three/fiber";
 import {POI, Point} from "./types";
 import {Vector3, Group, Mesh} from "three";
 import {NavMesh} from "nav2d";
-import {cameraPosition} from "three/examples/jsm/nodes/accessors/CameraNode";
 
 interface SceneProps {
     startPOI: POI;
@@ -12,7 +11,11 @@ interface SceneProps {
     corridorJsonPath: string;
 }
 
-const indicator_height: number = 1.2;
+const indicator_height: number = 1.5;
+const signage_height: number = 0.2;
+const camera_height: number = 1.1;
+const walkable_area_height: number = -0.5;
+const groupRef_height: number = 1.5 - camera_height;
 
 interface IndicatorProps {
     endPOI: POI;
@@ -37,37 +40,31 @@ function Indicator(props: IndicatorProps) {
             <meshPhongMaterial color={'blue'}/>
             <Suspense fallback={null}>
                 <Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
-                    Test
+                    {props.endPOI.name}
                 </Text>
             </Suspense>
         </mesh>
     )
 }
 
-function Line2Button(props: LineProps) {
+function VirtualSignage(props: LineProps) {
     const {camera} = useThree();
     const [points, setPoints] = useState<Array<number>>([0, -0.7, 0, 0, -0.7, -1])
-    const line_height: number = 0.5;
 
     // Update line position every frame
     useFrame(() => {
         if (camera.position && props.path) {
             const cameraPosition = new Vector3();
-            camera.getWorldPosition(cameraPosition);
-            // setPoints([cameraPosition.x, line_height, cameraPosition.z, props.endPOI.x, line_height, props.endPOI.y]);
-
             const updatedPoints: number[] = [];
 
-            updatedPoints.push(cameraPosition.x, line_height, cameraPosition.z);
-
-            console.log(updatedPoints);
+            camera.getWorldPosition(cameraPosition);
+            updatedPoints.push(cameraPosition.x, signage_height, cameraPosition.z);
 
             props.path.forEach((point: { x: number; y: number; }) => {
-                updatedPoints.push(point.x, line_height, point.y);
+                updatedPoints.push(point.x, signage_height, point.y);
             });
 
             setPoints(updatedPoints);
-
         } else {
             setPoints([0, -0.7, 0, 0, -0.7, -1])
         }
@@ -80,7 +77,6 @@ function Line2Button(props: LineProps) {
 
 function WalkableArea(props: LineProps) {
     const [points, setPoints] = useState<Array<number>>([0, -0.7, 0, 0, -0.7, -1])
-    const line_height: number = 0;
 
     // Update line position every frame
     useFrame(() => {
@@ -88,10 +84,10 @@ function WalkableArea(props: LineProps) {
             const updatedPoints: number[] = [];
 
             props.path.forEach((point: { x: number; y: number; }) => {
-                updatedPoints.push(point.x, line_height, point.y);
+                updatedPoints.push(point.x, walkable_area_height, point.y);
             });
 
-            updatedPoints.push(props.path[0].x, line_height, props.path[0].y);
+            updatedPoints.push(props.path[0].x, walkable_area_height, props.path[0].y);
 
             setPoints(updatedPoints);
 
@@ -124,7 +120,7 @@ export default function Scene(props: SceneProps) {
     }, [props.corridorJsonPath]);
 
     function getPointOnRayFromP1ToP2(POI:POI): Point {
-        const distance = 0.1;
+        const distance = 0.5;
 
         const dx = POI.facing.x - POI.x;
         const dy = POI.facing.y - POI.y;
@@ -146,8 +142,8 @@ export default function Scene(props: SceneProps) {
     useEffect(() => {
         // distance control: from QR-code to camera
         const cameraPosition: Point = getPointOnRayFromP1ToP2(props.startPOI);
-        groupRef.current!.position.set(cameraPosition.x, 0, cameraPosition.y);
-        groupRef.current!.lookAt(props.startPOI.x, 0, props.startPOI.y)
+        groupRef.current!.position.set(cameraPosition.x, groupRef_height, cameraPosition.y);
+        groupRef.current!.lookAt(props.startPOI.x, groupRef_height, props.startPOI.y)
         groupRef.current!.rotateY(Math.PI)
     }, [props.startPOI]);
 
@@ -175,7 +171,7 @@ export default function Scene(props: SceneProps) {
                 <primitive object={camera}/>
             </group>
             <Indicator endPOI={props.endPOI}/>
-            <Line2Button path={path}/>
+            <VirtualSignage path={path}/>
             <WalkableArea path={polygonPoints[0]}></WalkableArea>
 
         </>

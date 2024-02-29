@@ -20,7 +20,7 @@ export default function App() {
     return (
         <>
             {/*{showAR ? (*/}
-                <ARButton/>
+            <ARButton/>
             {/*) : null*/}
             {/*}*/}
             {/*<CookieConsent*/}
@@ -28,9 +28,9 @@ export default function App() {
             {/*    onAccept={handleCookieConsentAccepted}*/}
             {/*    cookieName={'IndoorNavigatorPrivacyCookie'}*/}
             {/*    overlay>Your location is not being tracked.</CookieConsent>*/}
-            <Navigator poiJsonPath={process.env.PUBLIC_URL + '/test/poi.json'}
+            <Navigator poiJsonPath={`${process.env.PUBLIC_URL}/test/EEE-6F/poi.json`}
                        startUUID={'12beebf7-6a6d-4c33-ba9f-3d96887a48cf'}
-                       corridorJsonPath={process.env.PUBLIC_URL + '/test/corridor.json'}/>
+                       corridorJsonPath={`${process.env.PUBLIC_URL}/test/EEE-6F/corridor.json`}/>
 
         </>
     )
