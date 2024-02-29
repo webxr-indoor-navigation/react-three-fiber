@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/react-three-fiber/static/css/main.3625e222.css",
-    "main.js": "/react-three-fiber/static/js/main.af15770b.js",
+    "main.js": "/react-three-fiber/static/js/main.38640f01.js",
     "index.html": "/react-three-fiber/index.html"
   },
   "entrypoints": [
     "static/css/main.3625e222.css",
-    "static/js/main.af15770b.js"
+    "static/js/main.38640f01.js"
   ]
 }
